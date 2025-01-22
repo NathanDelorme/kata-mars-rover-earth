@@ -2,39 +2,82 @@ package info.dmerej;
 
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import java.util.stream.Stream;
 
 public class RoverMovesTest {
     Position startPos=new Position(4,2);
 
-
+    //FORWARD/BACKWARD MOVEMENT
     //NORTH
-    @Test
-    public void moveForwardNorthTest(){
-        Rover rover=new Rover(startPos,Direction.NORTH);
+    @ParameterizedTest(name = "{0} is expected to output {1}")
+    @MethodSource("moveForwardTestCases")
+    public void moveForwardTest(Direction direction,Position expectedPosition){
+        Rover rover=new Rover(startPos,direction);
         rover.moveForward();
-        assert rover.getPosition().equals(new Position(4,3));
+        assert rover.getPosition().equals(expectedPosition);
     }
-    @Test
-    public void moveBackwardNorthTest(){
-        Rover rover=new Rover(startPos,Direction.NORTH);
+    private static Stream<Arguments> moveForwardTestCases() {
+        return Stream.of(
+                Arguments.of(Direction.NORTH, new Position(4,3)),
+                Arguments.of(Direction.EAST, new Position(5,2)),
+                Arguments.of(Direction.SOUTH, new Position(4,1)),
+                Arguments.of(Direction.WEST, new Position(3,2))
+        );
+    }
+
+    @ParameterizedTest(name = "Move {0}, expected output: {1}")
+    @MethodSource("moveBackwardTestCases")
+    public void moveBackwardTest(Direction direction,Position expectedPosition){
+        Rover rover=new Rover(startPos,direction);
         rover.moveBackward();
-        assert rover.getPosition().equals(new Position(4,1));
+        assert rover.getPosition().equals(expectedPosition);
+    }
+    private static Stream<Arguments> moveBackwardTestCases() {
+        return Stream.of(
+                Arguments.of(Direction.SOUTH, new Position(4,3)),
+                Arguments.of(Direction.WEST, new Position(5,2)),
+                Arguments.of(Direction.NORTH, new Position(4,1)),
+                Arguments.of(Direction.EAST, new Position(3,2))
+        );
     }
 
-
-    //EAST
-    @Test
-    public void moveForwardEastTest(){
-        Rover rover=new Rover(startPos,Direction.EAST);
-        rover.moveForward();
-        assert rover.getPosition().equals(new Position(5,2));
-    }
-    @Test
-    public void moveBackwardEastTest(){
-        Rover rover=new Rover(startPos,Direction.EAST);
-        rover.moveBackward();
-        assert rover.getPosition().equals(new Position(3,2));
+    //LEFT/RIGHT ROTATION
+    //FROM NORTH
+    @ParameterizedTest(name = "{0} is expected to output {1}")
+    @MethodSource("rotateLeftTestCases")
+    public void rotateLeftTest(Direction startDirection,Direction expectedDirection){
+        Rover rover=new Rover(startPos,startDirection);
+        rover.rotateLeft();
+        assert rover.getDirection()==expectedDirection;
     }
 
+    private static Stream<Arguments> rotateLeftTestCases() {
+        return Stream.of(
+                Arguments.of(Direction.SOUTH, Direction.EAST),
+                Arguments.of(Direction.WEST, Direction.SOUTH),
+                Arguments.of(Direction.NORTH, Direction.WEST),
+                Arguments.of(Direction.EAST, Direction.NORTH)
+        );
+    }
 
+    @ParameterizedTest(name = "{0} is expected to output {1}")
+    @MethodSource("rotateRightTestCases")
+    public void rotateRightTest(Direction startDirection,Direction expectedDirection){
+        Rover rover=new Rover(startPos,startDirection);
+        rover.rotateRight();
+        assert rover.getDirection()==expectedDirection;
+    }
+    private static Stream<Arguments> rotateRightTestCases() {
+        return Stream.of(
+                Arguments.of(Direction.SOUTH, Direction.WEST),
+                Arguments.of(Direction.WEST, Direction.NORTH),
+                Arguments.of(Direction.NORTH, Direction.EAST),
+                Arguments.of(Direction.EAST, Direction.SOUTH)
+        );
+    }
 }

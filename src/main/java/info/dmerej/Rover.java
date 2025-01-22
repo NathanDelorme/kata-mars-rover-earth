@@ -27,6 +27,23 @@ public class Rover {
         }
     }
 
+    public void rotateRight(){
+        switch (direction){
+            case NORTH -> direction=Direction.EAST;
+            case EAST -> direction=Direction.SOUTH;
+            case WEST -> direction=Direction.NORTH;
+            case SOUTH -> direction=Direction.WEST;
+        }
+    }
+    public void rotateLeft(){
+        switch (direction){
+            case NORTH -> direction=Direction.WEST;
+            case EAST -> direction=Direction.NORTH;
+            case WEST -> direction=Direction.SOUTH;
+            case SOUTH -> direction=Direction.EAST;
+        }
+    }
+
     public Position getPosition() {
         return position;
     }
