@@ -9,6 +9,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class RoverMovesTest {
     Position startPos=new Position(4,2);
 
@@ -19,7 +21,7 @@ public class RoverMovesTest {
     public void moveForwardTest(Direction direction,Position expectedPosition){
         Rover rover=new Rover(startPos,direction);
         rover.moveForward();
-        assert rover.getPosition().equals(expectedPosition);
+        assertEquals(rover.getPosition(),expectedPosition);
     }
     private static Stream<Arguments> moveForwardTestCases() {
         return Stream.of(
@@ -35,7 +37,7 @@ public class RoverMovesTest {
     public void moveBackwardTest(Direction direction,Position expectedPosition){
         Rover rover=new Rover(startPos,direction);
         rover.moveBackward();
-        assert rover.getPosition().equals(expectedPosition);
+        assertEquals(rover.getPosition(),expectedPosition);
     }
     private static Stream<Arguments> moveBackwardTestCases() {
         return Stream.of(
@@ -53,7 +55,7 @@ public class RoverMovesTest {
     public void rotateLeftTest(Direction startDirection,Direction expectedDirection){
         Rover rover=new Rover(startPos,startDirection);
         rover.rotateLeft();
-        assert rover.getDirection()==expectedDirection;
+        assertEquals(rover.getDirection(),expectedDirection);
     }
 
     private static Stream<Arguments> rotateLeftTestCases() {
@@ -70,7 +72,7 @@ public class RoverMovesTest {
     public void rotateRightTest(Direction startDirection,Direction expectedDirection){
         Rover rover=new Rover(startPos,startDirection);
         rover.rotateRight();
-        assert rover.getDirection()==expectedDirection;
+        assertEquals(rover.getDirection(),expectedDirection);
     }
     private static Stream<Arguments> rotateRightTestCases() {
         return Stream.of(
